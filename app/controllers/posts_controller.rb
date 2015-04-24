@@ -1,6 +1,9 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
+  #Authentiction
+  before_action :authenticate, except: [:index, :show]
+
   # GET /posts
   # GET /posts.json
   def index
@@ -28,6 +31,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
+        # same as ...redirect_to post_url(@post) ...:
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
         format.json { render :show, status: :created, location: @post }
       else
@@ -70,5 +74,11 @@ class PostsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
       params.require(:post).permit(:title, :body)
+    end
+
+    def authenticate
+      authenticate_or_request_with_http_basic do |name, password|
+        name == "admin" && password == "secret"
+      end
     end
 end
