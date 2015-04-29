@@ -35,6 +35,8 @@ class CommentsController < ApplicationController
         #format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
         format.html { redirect_to @post, notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: @comment }
+        format.js # assumes that the file create.js.erb will be called when trying to respond with javascript
+
       else
         format.html { render :new }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
